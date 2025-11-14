@@ -1,0 +1,38 @@
+# Job Search AI Agent
+# GitHub Actions workflow for CI/CD
+
+name: CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Check Python syntax
+      run: |
+        python -m py_compile main.py demo.py
+        python -m py_compile src/*.py src/agents/*.py src/utils/*.py
+    
+    - name: Run demo test
+      run: |
+        python demo.py

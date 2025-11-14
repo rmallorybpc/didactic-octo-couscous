@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  job-search-agent:
+    build: .
+    container_name: job-search-ai-agent
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    command: python main.py --mode schedule
